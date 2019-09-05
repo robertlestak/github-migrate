@@ -160,10 +160,12 @@ func (t *Team) AllMembers() ([]*User, error) {
 		}
 		us = append(us, usl...)
 		if lp.Next == lp.Last && lp.Last > 0 {
+			us = append(us, usl...)
 			break
 		}
 		lp = llp
 		if lp.Last == 0 {
+			us = append(us, usl...)
 			break
 		}
 	}

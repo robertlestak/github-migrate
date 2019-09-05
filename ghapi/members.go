@@ -47,10 +47,12 @@ func AllMembers() ([]*User, error) {
 			return us, err
 		}
 		if lp.Next == lp.Last && lp.Last > 0 {
+			us = append(us, usl...)
 			break
 		}
 		lp = llp
 		if lp.Last == 0 {
+			us = append(us, usl...)
 			break
 		}
 		us = append(us, usl...)
@@ -227,7 +229,7 @@ func (m *Membership) Invite() error {
 	type params struct {
 		InviteeID int    `json:"invitee_id,omitempty"`
 		Email     string `json:"email,omitempty"`
-		TeamIDs   []int  `json:"team_ids"`
+		TeamIDs   []int  `json:"team_ids,omitempty"`
 		Role      string `json:"role"`
 	}
 	p := &params{
