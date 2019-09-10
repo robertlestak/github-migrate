@@ -232,6 +232,9 @@ func (m *Membership) Invite() error {
 		TeamIDs   []int  `json:"team_ids,omitempty"`
 		Role      string `json:"role"`
 	}
+	if m.Role == "member" {
+		m.Role = "direct_member"
+	}
 	p := &params{
 		Role: m.Role,
 	}
