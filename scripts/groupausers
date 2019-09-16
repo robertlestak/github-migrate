@@ -1,0 +1,33 @@
+#!/bin/bash
+
+groupamigrate() {
+  for user in $(cat ~/Desktop/github-10-09-2019.csv | grep -i '@umusic.com' | awk -F ',' '{print $1}'); do
+    echo ./scripts/migrate $user
+  done
+}
+
+groupa() {
+  cat ~/Desktop/github-10-09-2019.csv | grep -i '@umusic.com' | awk -F ',' '{print $1}' | xargs
+}
+
+teamusers() {
+  TEAM="$1"
+  if [[ -z "$TEAM" ]]; then
+    echo TEAM required
+    exit 1
+  fi
+  TEAMUSERS=$(./dist/ghmigrate -users -team "$TEAM" | sort | uniq)
+  for user in $(groupa); do
+    for teamuser in ${TEAMUSERS[@]}; do
+      if [[ "$user" == "$teamuser" ]]; then
+        ./scripts/migrate $user
+      fi
+    done
+  done
+}
+
+main() {
+  teamusers "$1"
+}
+
+main "$@"

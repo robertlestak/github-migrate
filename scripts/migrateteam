@@ -1,0 +1,12 @@
+#!/bin/bash
+
+TEAM="$1"
+
+if [[ -z "$TEAM" ]]; then
+  echo TEAM required
+  exit 1
+fi
+
+for user in $(./dist/ghmigrate -users -team $TEAM); do
+  ./scripts/migrate "$user"
+done

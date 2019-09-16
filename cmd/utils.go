@@ -20,6 +20,14 @@ func pullMembership() {
 	ghapi.SaveMembership(ms)
 }
 
+func pullInvitations() {
+	is, merr := ghapi.GetAllInvitations()
+	if merr != nil {
+		log.Fatal(merr)
+	}
+	ghapi.SaveInvitations(is)
+}
+
 func pullUsers() {
 	us, uerr := ghapi.AllMembers()
 	if uerr != nil {

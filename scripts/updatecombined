@@ -1,0 +1,28 @@
+#!/bin/bash
+
+FULL=~/Desktop/github-10-09-2019.csv
+
+rm -f $FULL.updated
+
+head -n1 $FULL >> $FULL.updated
+
+while read userrow; do
+  user="$(echo $userrow | awk -F',' '{print $1}')"
+  if [[ "$user" == "login" ]]; then
+    continue
+  fi
+  echo checking user $user > /dev/stderr
+  FOUND="false"
+  while read muserrow; do
+    muser=$(echo $muserrow | awk -F',' '{print $1}')
+    if [[ "$(echo $muser | tr A-Z a-z)" == "$(echo $user | tr A-Z a-z)" ]]; then
+      echo $user migrated
+      FOUND="true"
+      sed "s|^$user,false,|$user,true,|" $FULL | grep "$user," >> $FULL.updated
+    fi
+  done < data/migrated.csv
+  if [[ "$FOUND" == "false" ]]; then
+    echo user $user not yet migrated > /dev/stderr
+    grep "^$user," $FULL >> $FULL.updated
+  fi
+done < $FULL

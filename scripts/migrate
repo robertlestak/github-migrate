@@ -1,0 +1,17 @@
+#!/bin/bash
+
+USERNAME="$1"
+
+if [[ -z "$USERNAME" ]]; then
+  echo username required
+  exit 1
+fi
+
+
+
+if [[ -z $(grep "$USERNAME," data/migrated.csv) ]]; then
+  ./dist/ghmigrate -migrate "$USERNAME"
+  echo "$USERNAME,true" >> data/migrated.csv
+else
+  echo $USERNAME already migrated
+fi
