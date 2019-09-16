@@ -21,6 +21,12 @@ func GetAllOutsideCollaborators() ([]*User, error) {
 		log.SetOutput(os.Stdout)
 		log.Printf("Listing Org Outside Collaborators, %+v\n", lp)
 		usl, llp, err := ListOutsideCollaborators(lp.Next)
+		for _, u := range usl {
+			gerr := u.GetDetails()
+			if gerr != nil {
+				return us, gerr
+			}
+		}
 		us = append(us, usl...)
 		if err != nil {
 			return us, err
