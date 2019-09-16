@@ -21,7 +21,7 @@ type Invitation struct {
 	InvitationTeamURL string `json:"invitation_team_url"`
 }
 
-// AllInvitations lists all repos for a team
+// GetAllInvitations lists all repos for a team
 func GetAllInvitations() ([]*Invitation, error) {
 	var lp ListPages
 	var rs []*Invitation
@@ -31,8 +31,8 @@ func GetAllInvitations() ([]*Invitation, error) {
 		}
 		log.SetOutput(os.Stdout)
 		log.Printf("Listing Org Invitations, %+v\n", lp)
-		rsl, llp, err := ListInvitations(lp.Next)
-		rs = append(rs, rsl...)
+		isl, llp, err := ListInvitations(lp.Next)
+		rs = append(rs, isl...)
 		if err != nil {
 			return rs, err
 		}
@@ -47,7 +47,7 @@ func GetAllInvitations() ([]*Invitation, error) {
 	return rs, nil
 }
 
-// ListInvitations lists repos for a team
+// ListInvitations lists pending invitations for org
 func ListInvitations(page int) ([]*Invitation, ListPages, error) {
 	var il []*Invitation
 	var lp ListPages

@@ -28,6 +28,14 @@ func pullInvitations() {
 	ghapi.SaveInvitations(is)
 }
 
+func pullOutsideCollaborators() {
+	cs, merr := ghapi.GetAllOutsideCollaborators()
+	if merr != nil {
+		log.Fatal(merr)
+	}
+	ghapi.SaveOutsideCollaborators(cs)
+}
+
 func pullUsers() {
 	us, uerr := ghapi.AllMembers()
 	if uerr != nil {

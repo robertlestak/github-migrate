@@ -24,7 +24,7 @@ var (
 
 func init() {
 	pull = flag.Bool("pull", false, "Pull latest from API")
-	pullType = flag.String("type", "all", "Type of data to pull. [users|memberships|teams|invitations|all].")
+	pullType = flag.String("type", "all", "Type of data to pull. [collaborators|users|memberships|teams|invitations|all].")
 	migrate = flag.String("migrate", "", "Migrate specified user to SSO")
 	dataDir = flag.String("dir", "", "Directory to store local data. Can be overridden with DATA_DIR env var")
 	token = flag.String("token", "", "GitHub token. Can be overridden with GITHUB_TOKEN env var")
@@ -72,6 +72,8 @@ func pullData() {
 	switch *pullType {
 	case "all":
 		pullAll()
+	case "collaborators":
+		pullOutsideCollaborators()
 	case "users":
 		pullUsers()
 	case "memberships":
