@@ -280,3 +280,15 @@ func (m *Membership) Invite() error {
 	}
 	return nil
 }
+
+func (u *User) Repositories(repos []*Repository) ([]*Repository, error) {
+	var ur []*Repository
+	for _, r := range repos {
+		for _, c := range r.Contributors {
+			if c.Login == u.Login {
+				ur = append(ur, r)
+			}
+		}
+	}
+	return ur, nil
+}

@@ -12,6 +12,14 @@ import (
 	"github.com/umg/devops-github-migrate/ghapi"
 )
 
+func pullRepositories() {
+	rs, merr := ghapi.OrgRepositories()
+	if merr != nil {
+		log.Fatal(merr)
+	}
+	ghapi.SaveRepositories(rs)
+}
+
 func pullMembership() {
 	ms, merr := ghapi.GetAllMembership()
 	if merr != nil {
