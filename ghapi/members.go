@@ -175,7 +175,7 @@ func (u *User) GetDetailsLocal() (*User, error) {
 
 // GetLocalMembership returns membership details for a user
 func (u *User) GetLocalMembership() (*Membership, error) {
-	var m *Membership
+	m := new(Membership)
 	memberListFile := path.Join(DataDir, "memberships.json")
 	if _, cerr := os.Stat(memberListFile); os.IsNotExist(cerr) {
 		log.Println(memberListFile, "does not exist")
@@ -232,7 +232,7 @@ func (m *Membership) Invite() error {
 		TeamIDs   []int  `json:"team_ids,omitempty"`
 		Role      string `json:"role"`
 	}
-	if m.Role == "member" {
+	if m.Role == "" || m.Role == "member" {
 		m.Role = "direct_member"
 	}
 	p := &params{

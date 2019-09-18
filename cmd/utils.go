@@ -87,9 +87,17 @@ func migrateUser(u ghapi.User) error {
 	if err != nil {
 		return err
 	}
-	rerr := m.Remove()
-	if rerr != nil {
-		return rerr
+	if m.URL != "" {
+		rerr := m.Remove()
+		if rerr != nil {
+			return rerr
+		}
+	} else {
+		err := u.GetDetails()
+		if err != nil {
+			return err
+		}
+		m.User = u
 	}
 	ierr := m.Invite()
 	if ierr != nil {
