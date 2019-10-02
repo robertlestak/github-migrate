@@ -11,6 +11,7 @@ import (
 
 var (
 	migrate  *string
+	remove   *string
 	org      *string
 	team     *string
 	dataDir  *string
@@ -26,6 +27,7 @@ func init() {
 	pull = flag.Bool("pull", false, "Pull latest from API")
 	pullType = flag.String("type", "all", "Type of data to pull. [collaborators|users|memberships|teams|invitations|repositories|all].")
 	migrate = flag.String("migrate", "", "Migrate specified user to SSO")
+	remove = flag.String("remove", "", "Remove specified user from org")
 	dataDir = flag.String("dir", "", "Directory to store local data. Can be overridden with DATA_DIR env var")
 	token = flag.String("token", "", "GitHub token. Can be overridden with GITHUB_TOKEN env var")
 	org = flag.String("org", "", "Organization to migrate. Can be overridden with GITHUB_ORG env var")
@@ -98,6 +100,15 @@ func main() {
 			Login: *migrate,
 		}
 		err := migrateUser(u)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	if *remove != "" {
+		u := ghapi.User{
+			Login: *remove,
+		}
+		err := removeUser(u)
 		if err != nil {
 			log.Fatal(err)
 		}

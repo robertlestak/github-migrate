@@ -106,6 +106,26 @@ func migrateUser(u ghapi.User) error {
 	return nil
 }
 
+func removeUser(u ghapi.User) error {
+	m, err := u.GetLocalMembership()
+	if err != nil {
+		return err
+	}
+	if m.URL != "" {
+		rerr := m.Remove()
+		if rerr != nil {
+			return rerr
+		}
+	} else {
+		err := u.GetDetails()
+		if err != nil {
+			return err
+		}
+		m.User = u
+	}
+	return nil
+}
+
 func printUserList(ul []*ghapi.User, d string) {
 	for _, lu := range ul {
 		val := reflect.ValueOf(lu).Elem()

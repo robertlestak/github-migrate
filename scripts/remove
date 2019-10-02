@@ -1,0 +1,17 @@
+#!/bin/bash
+
+USERNAME="$1"
+
+if [[ -z "$USERNAME" ]]; then
+  echo username required
+  exit 1
+fi
+
+
+
+if [[ -z $(grep "$USERNAME," data/removed.csv) ]]; then
+  ./dist/ghmigrate -remove "$USERNAME"
+  echo "$USERNAME,true" >> data/removed.csv
+else
+  echo $USERNAME already removed
+fi
