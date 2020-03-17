@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cloneandsync() {
+	echo syncing $r
+	if [[ ! -d "$(basename $r)" ]]; then
+		git clone $r
+	fi
+	cd $(basename $r)
+	git fetch --all
+	cd -
+}
+
+while read r; do
+	cloneandsync $r 
+done < repos.txt
